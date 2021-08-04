@@ -77,11 +77,11 @@ PODS:
   - OpenSSL-Universal (1.0.2.20):
     - OpenSSL-Universal/Static (= 1.0.2.20)
   - OpenSSL-Universal/Static (1.0.2.20)
-  - Permission-BluetoothPeripheral (2.2.2):
+  - Permission-BluetoothPeripheral (2.2.0):
     - RNPermissions
-  - Permission-LocationAlways (2.2.2):
+  - Permission-LocationAlways (2.2.0):
     - RNPermissions
-  - Permission-LocationWhenInUse (2.2.2):
+  - Permission-LocationWhenInUse (2.2.0):
     - RNPermissions
   - RCTRequired (0.62.2)
   - RCTTypeSafety (0.62.2):
@@ -309,8 +309,8 @@ PODS:
     - React-cxxreact (= 0.62.2)
     - React-jsi (= 0.62.2)
     - ReactCommon/callinvoker (= 0.62.2)
-  - RNPermissions (2.2.2):
-    - React-Core
+  - RNPermissions (2.2.0):
+    - React
   - SwiftProtobuf (1.5.0)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
@@ -457,9 +457,9 @@ SPEC CHECKSUMS:
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   OpenSSL-Universal: ff34003318d5e1163e9529b08470708e389ffcdd
-  Permission-BluetoothPeripheral: 73e80c434beef6570ba7c322a6882a8d46c2c4d3
-  Permission-LocationAlways: 700dfb730b07b24a84f8c173b93ad816d71d3dc8
-  Permission-LocationWhenInUse: 871e81c06c1fc578353fce962d5d8e6efa697f1a
+  Permission-BluetoothPeripheral: d7b686f612db77ffb95762e28d76f01b587dcd03
+  Permission-LocationAlways: 8026796fd0fc8d735adbd84cd1ae28a4fb22ac22
+  Permission-LocationWhenInUse: eba08412fee84a8ac5140472d83aef2427a5befe
   RCTRequired: cec6a34b3ac8a9915c37e7e4ad3aa74726ce4035
   RCTTypeSafety: 93006131180074cffa227a1075802c89a49dd4ce
   React: 29a8b1a02bd764fb7644ef04019270849b9a7ac3
@@ -480,11 +480,11 @@ SPEC CHECKSUMS:
   React-RCTText: fae545b10cfdb3d247c36c56f61a94cfd6dba41d
   React-RCTVibration: 4356114dbcba4ce66991096e51a66e61eda51256
   ReactCommon: ed4e11d27609d571e7eee8b65548efc191116eb3
-  RNPermissions: 5df468064df661a4c8c017e2791ce90d7695eea5
+  RNPermissions: 477d88d0be7ecb0a7b344e4d5fbb0352de104626
   SwiftProtobuf: 241400280f912735c1e1b9fe675fdd2c6c4d42e2
   Yoga: 3ebccbdd559724312790e7742142d062476b698e
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
 PODFILE CHECKSUM: 2b762f067554ddfb3b34b014690235a934e246cc
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.10.1
