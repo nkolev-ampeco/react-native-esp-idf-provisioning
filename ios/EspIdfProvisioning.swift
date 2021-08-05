@@ -96,27 +96,6 @@ class EspIdfProvisioning: NSObject {
       })
     }
 
-    @objc(connectDevice:)
-    func connectDevice(successCallback: @escaping RCTResponseSenderBlock) -> Void {
-      var completedFlag = false
-      EspDevice.shared.espDevice?.connect(completionHandler: { status in
-        dump(status)
-        if(!completedFlag) {
-          completedFlag = true
-          switch(status) {
-          case .connected:
-            successCallback([nil, "connected"])
-          case .failedToConnect(_):
-            successCallback(["failed_to_connect", nil])
-          case .disconnected:
-            successCallback(["disconnected", nil])
-          @unknown default:
-            successCallback([status, nil])
-          }
-        }
-      })
-    }
-
     @objc(scanWifiList:withRejecter:)
     func scanWifiList(resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) -> Void {
       EspDevice.shared.espDevice?.scanWifiList{ wifiList, _ in

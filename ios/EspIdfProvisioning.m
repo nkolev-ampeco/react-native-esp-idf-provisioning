@@ -14,7 +14,6 @@ RCT_EXTERN_METHOD(createDevice:(NSString *)deviceName
                   devicePassword:(NSString *)devicePassword
                   deviceProofOfPossession:(NSString *)deviceProofOfPossession
                   successCallback:(RCTResponseSenderBlock *)successCallback)
-RCT_EXTERN_METHOD(connectDevice:(RCTResponseSenderBlock *)successCallback)
 RCT_EXTERN_METHOD(scanWifiList:
   (RCTPromiseResolveBlock)resolve
   withRejecter:(RCTPromiseRejectBlock)reject)
