@@ -107,7 +107,7 @@ export default function App() {
     console.log('handleScanWifi: start');
     try {
       const foundNetworks = await EspIdfProvisioning.scanWifiList();
-      console.log('handleScanWifi: Found Networks: ' + foundNetworks);
+      console.log('foundNetworks', foundNetworks);
     } catch (error) {
       console.log('handleScanWifi: ' + error);
     }
