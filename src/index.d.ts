@@ -1,8 +1,8 @@
 declare module 'react-native-esp-idf-provisioning' {
   export interface BLEDevice {
     name: string;
-    address: string;
   }
+
   export function getBleDevices(prefix: string): Promise<BLEDevice>;
   export interface ConnectBleDevice {
     deviceAddress: string;
