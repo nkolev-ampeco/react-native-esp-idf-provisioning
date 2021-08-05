@@ -37,9 +37,7 @@ class EspIdfProvisioning: NSObject {
     // Resolves to an array of BLE devices
     @objc(getBleDevices:withResolver:withRejecter:)
     func getBleDevices(prefix: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
-      // Check permissions
 
-      // Search for BLE devices (ESPProvisionManager.searchESPDevices())
       ESPProvisionManager.shared.searchESPDevices(devicePrefix:prefix, transport:.ble) { bleDevices, error in
         DispatchQueue.main.async {
           if bleDevices == nil {
@@ -49,12 +47,10 @@ class EspIdfProvisioning: NSObject {
             return
           }
 
-          // TODO: We only return the name of the devices. Do we want to return more (MAC address, RSSI...)?
           let deviceNames = bleDevices!.map {[
             "name": $0.name,
-            "address": $0.name
           ]}
-          // Return found BLE device names
+
           resolve(deviceNames)
         }
       }
@@ -66,13 +62,9 @@ class EspIdfProvisioning: NSObject {
     // The deviceAddress is the address we got from the "getBleDevices" function
     // Resolves when connected to device
     @objc(connectBleDevice:security:deviceProofOfPossession:withResolver:withRejecter:)
-    func connectBleDevice(deviceAddress: String, security: Int = 1, deviceProofOfPossession: String, resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) -> Void {
+    func connectBleDevice(deviceAddress: String, security: Int = 1, deviceProofOfPossession: String? = nil, resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) -> Void {
         
-        let innerSecurity: ESPSecurity = security == 1 ? .secure : .unsecure;
-        
-        print("security settings", " security ", security, " innerSecurity ", innerSecurity)
-        
-        ESPProvisionManager.shared.createESPDevice(deviceName: deviceAddress, transport: .ble, security: .secure, proofOfPossession: deviceProofOfPossession, completionHandler: { device, _ in
+        ESPProvisionManager.shared.createESPDevice(deviceName: deviceAddress, transport: .ble, security: security == 1 ? .secure : .unsecure,, proofOfPossession: deviceProofOfPossession, completionHandler: { device, _ in
           if device == nil {
             let error = NSError(domain: "connectBleDevice", code: 400, userInfo: [NSLocalizedDescriptionKey : "Device not found"])
             reject("400", "Device not found", error)
@@ -83,13 +75,17 @@ class EspIdfProvisioning: NSObject {
           let espDevice: ESPDevice = device!
           EspDevice.shared.setDevice(device: espDevice)
 
-          // TODO: Add event when the device disconnect
           espDevice.connect(completionHandler: { status in
-            print(status)
 
             switch status {
               case .connected:
-                  resolve(status)
+                  let response: [String: Any] = [
+                    "name": espDevice.name,
+                    "advertisementData": espDevice.advertisementData ?? {},
+                    "capabilities": espDevice.capabilities ?? [],
+                    "versionInfo": espDevice.versionInfo ?? {}
+                  ]
+                  resolve(response)
               case let .failedToConnect(error):
                   reject("400", "Failed to connect", error)
               default:
