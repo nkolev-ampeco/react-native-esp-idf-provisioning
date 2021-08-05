@@ -134,17 +134,27 @@ class EspIdfProvisioning: NSObject {
         resolve(networks)
       }
     }
-
+    
     @objc(provision:passPhrase:withResolver:withRejecter:)
     func provision(ssid: String, passPhrase: String, resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) -> Void {
-      var completedFlag = false
-      EspDevice.shared.espDevice?.provision(ssid: ssid, passPhrase: passPhrase, completionHandler: {
-        status in
-        dump(status)
-        if(!completedFlag) {
-          completedFlag = true
-          resolve(status)
-        }
-      })
+        var completedFlag = false
+        EspDevice.shared.espDevice?.provision(ssid: ssid, passPhrase: passPhrase, completionHandler: {
+            status in
+            dump(status)
+            if(!completedFlag) {
+                completedFlag = true
+                
+                switch status {
+                case .success:
+                    resolve("OK wifi station is connect")
+                default:
+                    reject("FAILED", error)
+                    
+                }
+                
+            }
+            
+        })
     }
+    
 }
