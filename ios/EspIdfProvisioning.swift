@@ -68,7 +68,7 @@ class EspIdfProvisioning: NSObject {
     @objc(connectBleDevice:security:deviceProofOfPossession:withResolver:withRejecter:)
     func connectBleDevice(deviceAddress: String, security: Int = 1, deviceProofOfPossession: String, resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) -> Void {
         
-        var innerSecurity: ESPSecurity = .secure = security == 1 ? .secure : .unsecure;
+        var innerSecurity: ESPSecurity = security == 1 ? .secure : .unsecure;
         
         print("security settings", innerSecurity)
         
