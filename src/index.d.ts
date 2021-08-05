@@ -1,13 +1,20 @@
 declare module 'react-native-esp-idf-provisioning' {
-  export interface BLEDevice {
-    name: string;
-  }
+  export type BLEDevice = {
+    advertisementData: Record<string, string>;
+    capabilities: string[];
+    versionInfo: Record<string, string>;
+  } & DiscoveredBLEDevice;
 
-  export function getBleDevices(prefix: string): Promise<BLEDevice>;
+  export type DiscoveredBLEDevice = {
+    name: string;
+  };
+
+  export function getBleDevices(prefix: string): Promise<DiscoveredBLEDevice>;
   export interface ConnectBleDevice {
-    deviceAddress: string;
+    name: string;
     security: 1 | 0;
     deviceProofOfPossession: string;
   }
-  export function connectBleDevice(arg: ConnectBleDevice): Promise<any>;
+
+  export function connectBleDevice(arg: ConnectBleDevice): Promise<BLEDevice>;
 }
