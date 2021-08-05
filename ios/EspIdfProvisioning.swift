@@ -148,7 +148,7 @@ class EspIdfProvisioning: NSObject {
                 case .success:
                     resolve("OK wifi station is connect")
                 default:
-                    reject("FAILED", error)
+                    reject("FAILED")
                     
                 }
                 
