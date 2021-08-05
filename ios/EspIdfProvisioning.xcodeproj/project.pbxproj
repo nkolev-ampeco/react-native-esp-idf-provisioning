@@ -24,6 +24,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		02A4212726BBDEBC004429FE /* delete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = delete.swift; sourceTree = "<group>"; };
 		134814201AA4EA6300B7C361 /* libEspIdfProvisioning.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libEspIdfProvisioning.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E351CF628849C7AC334674F /* Pods_EspIdfProvisioning.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EspIdfProvisioning.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		62CBF06536B7081F46272F4B /* Pods-EspIdfProvisioning.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EspIdfProvisioning.release.xcconfig"; path = "Target Support Files/Pods-EspIdfProvisioning/Pods-EspIdfProvisioning.release.xcconfig"; sourceTree = "<group>"; };
@@ -64,6 +65,7 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				02A4212726BBDEBC004429FE /* delete.swift */,
 				F4FF95D6245B92E800C19C63 /* EspIdfProvisioning.swift */,
 				B3E7B5891CC2AC0600A0062D /* EspIdfProvisioning.m */,
 				F4FF95D5245B92E700C19C63 /* EspIdfProvisioning-Bridging-Header.h */,

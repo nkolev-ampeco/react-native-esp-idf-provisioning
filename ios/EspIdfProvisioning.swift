@@ -66,9 +66,8 @@ class EspIdfProvisioning: NSObject {
     // The deviceAddress is the address we got from the "getBleDevices" function
     // Resolves when connected to device
     @objc(connectBleDevice:deviceProofOfPossession:withResolver:withRejecter:)
-    func connectBleDevice(deviceAddress: String, security: ESPSecurity = .secure, deviceProofOfPossession: String, resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) -> Void {
-      // TODO: make security level a parameter.
-        self.security = security
+    func connectBleDevice(deviceAddress: String, security: Int = .secure, deviceProofOfPossession: String, resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) -> Void {
+        self.security = security;
       ESPProvisionManager.shared.createESPDevice(deviceName: deviceAddress, transport: .ble, security: security, proofOfPossession: deviceProofOfPossession, completionHandler: { device, _ in
           if device == nil {
             let error = NSError(domain: "connectBleDevice", code: 400, userInfo: [NSLocalizedDescriptionKey : "Device not found"])
