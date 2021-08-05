@@ -121,7 +121,7 @@ class EspIdfProvisioning: NSObject {
                 
                 switch status {
                 case .success:
-                    resolve("OK wifi station is connect")
+                    resolve(nil)
                 default:
                     let error = NSError(domain: "Failed to connect", code: 400, userInfo: [NSLocalizedDescriptionKey : "Default connection error"])
                     reject("400", "FAILED", error)                    
