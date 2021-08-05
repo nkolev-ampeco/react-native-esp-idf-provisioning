@@ -6,7 +6,7 @@ RCT_EXTERN_METHOD(getBleDevices:(NSString *)prefix
                  withResolver:(RCTPromiseResolveBlock)resolve
                  withRejecter:(RCTPromiseRejectBlock)reject)
 RCT_EXTERN_METHOD(connectBleDevice:(NSString *)deviceAddress
-                 security:(NSNumber *)security
+                 security:(NSInteger *)security
                  deviceProofOfPossession:(NSString *)deviceProofOfPossession
                  withResolver:(RCTPromiseResolveBlock)resolve
                  withRejecter:(RCTPromiseRejectBlock)reject)
