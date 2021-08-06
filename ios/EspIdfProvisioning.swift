@@ -118,9 +118,8 @@ class EspIdfProvisioning: NSObject {
             dump(status)
             if(!completedFlag) {
                 completedFlag = true
-                
                 switch status {
-                case .success:
+                case .configApplied, .success:
                     resolve(nil)
                 default:
                     let error = NSError(domain: "Failed to connect", code: 400, userInfo: [NSLocalizedDescriptionKey : "Default connection error"])
