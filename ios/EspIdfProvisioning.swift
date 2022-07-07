@@ -9,9 +9,19 @@ class EspDevice {
   }
 }
 
+public enum ConnectEventNames: String {
+    case connected = "connected"
+    case failedToConnect = "connection_failed"
+    case disconnected  = "disconnected"
+}
+public enum ProvisionEventNames: String {
+    case configApplied = "config_applied"
+    case success  = "success"
+    case failedToProvision = "provision_failed"
+}
 
 @objc(EspIdfProvisioning)
-class EspIdfProvisioning: NSObject {
+class EspIdfProvisioning: RCTEventEmitter {
     private var security: ESPSecurity = .secure
 
     var bleDevices:[ESPDevice]?
@@ -49,6 +59,7 @@ class EspIdfProvisioning: NSObject {
 
           let deviceNames = bleDevices!.map {[
             "name": $0.name,
+            "security":$0.security.rawValue
           ]}
 
           resolve(deviceNames)
@@ -63,7 +74,7 @@ class EspIdfProvisioning: NSObject {
     // Resolves when connected to device
     @objc(connectBleDevice:security:deviceProofOfPossession:withResolver:withRejecter:)
     func connectBleDevice(deviceAddress: String, security: Int = 1, deviceProofOfPossession: String? = nil, resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) -> Void {
-        
+
         ESPProvisionManager.shared.createESPDevice(deviceName: deviceAddress, transport: .ble, security: security == 1 ? .secure : .unsecure, proofOfPossession: deviceProofOfPossession, completionHandler: { device, _ in
           if device == nil {
             let error = NSError(domain: "connectBleDevice", code: 400, userInfo: [NSLocalizedDescriptionKey : "Device not found"])
@@ -75,23 +86,33 @@ class EspIdfProvisioning: NSObject {
           let espDevice: ESPDevice = device!
           EspDevice.shared.setDevice(device: espDevice)
 
-          espDevice.connect(completionHandler: { status in
-
-            switch status {
+          espDevice.connect(completionHandler: { [unowned self] status in
+              switch status {
               case .connected:
                   let response: [String: Any] = [
-                    "name": espDevice.name,
-                    "advertisementData": espDevice.advertisementData ?? {},
-                    "capabilities": espDevice.capabilities ?? [],
-                    "versionInfo": espDevice.versionInfo ?? {}
+                      "event_name": ConnectEventNames.connected.rawValue,
+                      "name": espDevice.name,
+                      "capabilities": espDevice.capabilities ?? [],
+                      "versionInfo": espDevice.versionInfo ?? {
+                      }
                   ]
+                  self.sendEvent(withName: "DeviceConnectionEvent", body: response)
                   resolve(response)
-              case let .failedToConnect(error):
-                  reject("400", "Failed to connect", error)
+              case .failedToConnect(_):
+                  let error = NSError(domain: "connectBleDevice", code: 400, userInfo: [NSLocalizedDescriptionKey: "Failed to connect"])
+                  let response: [String: Any] = [
+                      "event_name": ConnectEventNames.failedToConnect.rawValue
+                  ]
+                  self.sendEvent(withName: "DeviceConnectionEvent", body: response)
+                  reject(ConnectEventNames.failedToConnect.rawValue, "Failed to connect", error)
               default:
-                let error = NSError(domain: "connectBleDevice", code: 400, userInfo: [NSLocalizedDescriptionKey : "Default connection error"])
-                reject("400", "Default connection error", error)
-            }
+                  let error = NSError(domain: "connectBleDevice", code: 404, userInfo: [NSLocalizedDescriptionKey: "Default connection error"])
+                  let response: [String: Any] = [
+                      "event_name": ConnectEventNames.disconnected.rawValue
+                  ]
+                  self.sendEvent(withName: "DeviceConnectionEvent", body: response)
+                  reject(ConnectEventNames.disconnected.rawValue, "Default connection error", error)
+              }
           })
       })
     }
@@ -109,26 +130,57 @@ class EspIdfProvisioning: NSObject {
         resolve(networks)
       }
     }
-    
+
     @objc(provision:passPhrase:withResolver:withRejecter:)
     func provision(ssid: String, passPhrase: String, resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) -> Void {
         var completedFlag = false
         EspDevice.shared.espDevice?.provision(ssid: ssid, passPhrase: passPhrase, completionHandler: {
             status in
             dump(status)
-            if(!completedFlag) {
-                completedFlag = true
+            if (!completedFlag) {
                 switch status {
-                case .configApplied, .success:
-                    resolve(nil)
-                default:
-                    let error = NSError(domain: "Failed to connect", code: 400, userInfo: [NSLocalizedDescriptionKey : "Default connection error"])
-                    reject("400", "FAILED", error)                    
+                case .configApplied:
+                    let response: [String: Any] = [
+                        "event_name": ProvisionEventNames.configApplied.rawValue,
+                    ]
+                    self.sendEvent(withName: "DeviceProvisionEvent", body: response)
+                case .success:
+                    let response: [String: Any] = [
+                        "event_name": ProvisionEventNames.success.rawValue,
+                    ]
+                    self.sendEvent(withName: "DeviceProvisionEvent", body: response)
+                    completedFlag = true
+                    resolve(response)
+                case let .failure(espError):
+                    let message:String;
+                    switch espError {
+                       case .configurationError:
+                           message = "configurationError"
+                       case .sessionError:
+                            message = "sessionError"
+                       case .wifiStatusAuthenticationError:
+                            message = "wifiStatusAuthenticationError"
+                       default:
+                            message = String(describing: espError)
+                       }
+                    let error = NSError(domain: "provision", code: 400, userInfo: [NSLocalizedDescriptionKey: String(describing: espError)])
+                    let response: [String: Any] = [
+                        "event_name": ProvisionEventNames.failedToProvision.rawValue,
+                        "error": message
+                    ]
+                    self.sendEvent(withName: "DeviceProvisionEvent", body: response)
+                    completedFlag = true
+                    reject("400", "Default connection error", error)
                 }
-                
+
             }
-            
+
         })
     }
-    
+
+    @objc(supportedEvents)
+    override func supportedEvents() -> [String] {
+        return ["DeviceConnectionEvent","DeviceProvisionEvent"]
+    }
+
 }

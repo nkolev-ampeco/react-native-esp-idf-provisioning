@@ -5,7 +5,7 @@ React Native bindings for esp board provisioning
 ## Installation
 
 ```sh
-npm install https://github.com/ludwig-pro/react-native-esp-idf-provisioning
+npm install https://github.com/ampeco/react-native-esp-idf-provisioning
 ```
 
 ## Usage
