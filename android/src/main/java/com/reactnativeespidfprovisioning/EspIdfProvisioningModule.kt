@@ -25,6 +25,7 @@ import org.greenrobot.eventbus.Subscribe
 
 class EspIdfProvisioningModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
   val foundBLEDevices = HashMap<String, BluetoothDevice>();
+  var serviceUUID = String();
 
   init {
     EventBus.getDefault().register(this);
@@ -54,6 +55,9 @@ class EspIdfProvisioningModule(reactContext: ReactApplicationContext) : ReactCon
 
       override fun onPeripheralFound(device: BluetoothDevice, scanResult: ScanResult) {
         foundBLEDevices[device.address] = device;
+        if (scanResult.getScanRecord()?.getServiceUuids()  != null && scanResult.getScanRecord()?.getServiceUuids()?.size!! > 0) {
+          serviceUUID = scanResult.getScanRecord()!!.getServiceUuids().get(0).toString();
+        }
       }
 
       override fun scanCompleted() {
@@ -115,8 +119,10 @@ class EspIdfProvisioningModule(reactContext: ReactApplicationContext) : ReactCon
     esp.proofOfPossession = deviceProofOfPossession
 
     // TODO(wdm) What is the name of this service, and therefore what should this const be called?
-    //val SERVICE_UUID = "021a9004-0382-4aea-bff4-6b3f1c5adfb4"; // See config.service_uuid in app_prov.c
-    val SERVICE_UUID = "12345678-90ab-cdef-fedc-ba0987654321"; // See config.service_uuid in app_prov.c
+    var SERVICE_UUID = "12345678-90ab-cdef-fedc-ba0987654321"; // See config.service_uuid in app_prov.c
+    if(serviceUUID.length > 0) {
+      SERVICE_UUID = serviceUUID;
+    }
 
     val device = foundBLEDevices[deviceAddress]
     if (device == null) {
