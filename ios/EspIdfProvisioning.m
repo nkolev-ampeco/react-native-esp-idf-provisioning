@@ -22,7 +22,7 @@ RCT_EXTERN_METHOD(provision:(NSString *)ssid
                 passPhrase:(NSString *)passPhrase
                 withResolver:(RCTPromiseResolveBlock)resolve
                 withRejecter:(RCTPromiseRejectBlock)reject)
-
+RCT_EXTERN_METHOD(disconnectBLEDeviceIfConnected)
 
 + (BOOL) requiresMainQueueSetup {
   return YES;
