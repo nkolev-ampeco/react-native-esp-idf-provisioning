@@ -178,6 +178,11 @@ class EspIdfProvisioning: RCTEventEmitter {
         })
     }
 
+    @objc(disconnectBLEDeviceIfConnected:)
+    func disconnectBLEDeviceIfConnected() -> Void {
+        EspDevice.shared.espDevice?.disconnect()
+    }
+
     @objc(supportedEvents)
     override func supportedEvents() -> [String] {
         return ["DeviceConnectionEvent","DeviceProvisionEvent"]
