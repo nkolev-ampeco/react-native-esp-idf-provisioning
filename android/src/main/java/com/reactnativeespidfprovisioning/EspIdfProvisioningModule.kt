@@ -136,6 +136,15 @@ class EspIdfProvisioningModule(reactContext: ReactApplicationContext) : ReactCon
   }
 
   @ReactMethod
+  fun disconnectBLEDeviceIfConnected() {
+    val device = ESPProvisionManager.getInstance(reactApplicationContext).espDevice
+    if(device != null) {
+      Log.e("ESPProvisioning", "disconnectBLEDevice")
+      device.disconnectDevice();
+    }
+  }
+
+  @ReactMethod
   fun createDevice(ssid: String, password: String, devicePop: String,
                    callback: Callback ) {
     val device : ESPDevice = ESPProvisionManager.getInstance(reactApplicationContext).createESPDevice(ESPConstants.TransportType.TRANSPORT_BLE, ESPConstants.SecurityType.SECURITY_1)

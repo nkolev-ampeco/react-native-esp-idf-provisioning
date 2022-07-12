@@ -48,4 +48,6 @@ declare module 'react-native-esp-idf-provisioning' {
   export function scanWifiList(): Promise<WiFi[]>;
 
   export function provision(arg: Provision): Promise<void>;
+
+  export function disconnectBLEDeviceIfConnected(): void;
 }
