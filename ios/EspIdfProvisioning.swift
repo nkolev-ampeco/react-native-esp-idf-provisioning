@@ -178,7 +178,7 @@ class EspIdfProvisioning: RCTEventEmitter {
         })
     }
 
-    @objc(disconnectBLEDeviceIfConnected:)
+    @objc(disconnectBLEDeviceIfConnected)
     func disconnectBLEDeviceIfConnected() -> Void {
         EspDevice.shared.espDevice?.disconnect()
     }
