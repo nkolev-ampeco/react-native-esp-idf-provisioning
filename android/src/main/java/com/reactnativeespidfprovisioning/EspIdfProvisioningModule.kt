@@ -177,7 +177,7 @@ class EspIdfProvisioningModule(reactContext: ReactApplicationContext) : ReactCon
 
           result.pushMap(network)
         }
-        promise.resolve(result)
+        promise.resolve(result.toString())
       }
 
       override fun onWiFiScanFailed(p0: java.lang.Exception?) {
