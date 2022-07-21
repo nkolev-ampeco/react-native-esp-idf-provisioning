@@ -183,7 +183,7 @@ class EspIdfProvisioningModule(reactContext: ReactApplicationContext) : ReactCon
       }
 
       override fun onWiFiScanFailed(p0: java.lang.Exception?) {
-        promise.reject("Failed to get Wi-Fi scan list")
+        promise.reject(p0)
       }
     })
   }
