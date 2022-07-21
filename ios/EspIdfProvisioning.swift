@@ -121,7 +121,7 @@ class EspIdfProvisioning: RCTEventEmitter {
     func scanWifiList(resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) -> Void {
       EspDevice.shared.espDevice?.scanWifiList{ wifiList, _ in
 
-        let networks = wifiList!.map {[
+        let networks = wifiList?.map {[
             "name": $0.ssid,
             "rssi": $0.rssi,
             "security": $0.auth.rawValue,

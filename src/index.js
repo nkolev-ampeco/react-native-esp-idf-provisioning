@@ -6,7 +6,7 @@ const CONNECT_TIMEOUT = 30000;
 
 const scanWifiList = async () => {
   try {
-    await promiseTimeout(CONNECT_TIMEOUT, EspIdfProvisioning.scanWifiList());
+    return promiseTimeout(CONNECT_TIMEOUT, EspIdfProvisioning.scanWifiList());
   } catch (error) {
     return error;
   }
