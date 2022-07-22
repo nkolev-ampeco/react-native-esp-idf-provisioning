@@ -196,6 +196,7 @@ class EspIdfProvisioningModule(reactContext: ReactApplicationContext) : ReactCon
         override fun wifiConfigApplyFailed(p0: Exception?) {
           Log.e("ESPProvisioning", "provision-wifiConfigApplyFailed"+p0.toString());
           //device.disconnectDevice()
+          device.refreshServicesOfBleDevice() //instead of disconnect just for test
           promise.reject(p0.toString())
         }
 
@@ -205,6 +206,7 @@ class EspIdfProvisioningModule(reactContext: ReactApplicationContext) : ReactCon
 
         override fun onProvisioningFailed(p0: Exception?) {
           // device.disconnectDevice()
+          device.refreshServicesOfBleDevice() //instead of disconnect just for test
           Log.e("ESPProvisioning", "provision-onProvisioningFailed"+p0.toString());
           promise.reject(p0.toString())
         }
@@ -222,12 +224,14 @@ class EspIdfProvisioningModule(reactContext: ReactApplicationContext) : ReactCon
 
         override fun wifiConfigFailed(p0: Exception?) {
           //device.disconnectDevice()
+          device.refreshServicesOfBleDevice() //instead of disconnect just for test
           Log.e("ESPProvisioning", "provision-wifiConfigFailed"+p0.toString());
           promise.reject(p0.toString())
         }
 
         override fun provisioningFailedFromDevice(p0: ESPConstants.ProvisionFailureReason?) {
           //device.disconnectDevice()
+          device.refreshServicesOfBleDevice() //instead of disconnect just for test
           Log.e("ESPProvisioning", "provision-provisioningFailedFromDevice"+p0.toString());
           promise.reject(p0.toString())
         }
