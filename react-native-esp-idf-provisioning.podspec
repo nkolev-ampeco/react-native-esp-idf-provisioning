@@ -19,5 +19,5 @@ Pod::Spec.new do |s|
 
   s.dependency "React"
   s.dependency "Alamofire"
-  s.dependency "ESPProvision"
+  s.dependency "ESPProvision", "2.0.14"
 end
