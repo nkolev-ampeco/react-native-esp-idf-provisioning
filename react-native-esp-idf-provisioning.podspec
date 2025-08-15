@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
   s.license      = package["license"]
   s.authors      = package["author"]
 
-  s.platforms    = { :ios => "11.0" }
+  s.platforms    = { :ios => "13.4" }
   s.source       = { :git => "https://github.com/amoghpalnitkar/react-native-esp-idf-provisioning.git", :tag => "#{s.version}" }
 
   
