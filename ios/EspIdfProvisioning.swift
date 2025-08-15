@@ -23,8 +23,27 @@ public enum ProvisionEventNames: String {
 @objc(EspIdfProvisioning)
 class EspIdfProvisioning: RCTEventEmitter {
     private var security: ESPSecurity = .secure
+    private var hasListeners = false
 
     var bleDevices:[ESPDevice]?
+    
+    @objc override static func moduleName() -> String! {
+        return "EspIdfProvisioning"
+    }
+    
+    override func startObserving() {
+        hasListeners = true
+    }
+    
+    override func stopObserving() {
+        hasListeners = false
+    }
+    
+    override func sendEvent(withName name: String!, body: Any!) {
+        if hasListeners {
+            super.sendEvent(withName: name, body: body)
+        }
+    }
 
     @objc(createDevice:devicePassword:deviceProofOfPossession:successCallback:)
     func createDevice(_ deviceName: String, devicePassword: String, deviceProofOfPossession: String, successCallback: @escaping RCTResponseSenderBlock) -> Void {

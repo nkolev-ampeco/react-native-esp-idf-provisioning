@@ -75,7 +75,7 @@ class EspIdfProvisioningModule(reactContext: ReactApplicationContext) : ReactCon
       }
 
       override fun onFailure(p0: Exception?) {
-        promise.reject(p0.toString())
+        promise.reject(p0 as? Throwable ?: RuntimeException(p0?.message ?: "Connection failed", p0))
       }
     });
   }
@@ -183,7 +183,7 @@ class EspIdfProvisioningModule(reactContext: ReactApplicationContext) : ReactCon
       }
 
       override fun onWiFiScanFailed(p0: java.lang.Exception?) {
-        promise.reject(p0)
+        promise.reject(p0 as? Throwable ?: RuntimeException("WiFi scan failed", p0))
       }
     })
   }
@@ -197,7 +197,7 @@ class EspIdfProvisioningModule(reactContext: ReactApplicationContext) : ReactCon
           Log.e("ESPProvisioning", "provision-wifiConfigApplyFailed"+p0.toString());
           device.disconnectDevice()
           // device.refreshServicesOfBleDevice() //instead of disconnect just for test
-          promise.reject(p0.toString())
+          promise.reject(p0 as? Throwable ?: RuntimeException(p0?.message ?: "Provision failed", p0))
         }
 
         override fun wifiConfigApplied() {
@@ -208,7 +208,7 @@ class EspIdfProvisioningModule(reactContext: ReactApplicationContext) : ReactCon
           device.disconnectDevice()
           // device.refreshServicesOfBleDevice() //instead of disconnect just for test
           Log.e("ESPProvisioning", "provision-onProvisioningFailed"+p0.toString());
-          promise.reject(p0.toString())
+          promise.reject(p0 as? Throwable ?: RuntimeException(p0?.message ?: "Provision failed", p0))
         }
 
         override fun deviceProvisioningSuccess() {
@@ -219,21 +219,22 @@ class EspIdfProvisioningModule(reactContext: ReactApplicationContext) : ReactCon
         override fun createSessionFailed(p0: Exception?) {
           //here disconnect is not needed, in the SessionError catch disconnect call is already presented
           Log.e("ESPProvisioning", "provision-createSessionFailed"+p0.toString());
-          promise.reject(p0.toString())
+          promise.reject(p0 as? Throwable ?: RuntimeException(p0?.message ?: "Provision failed", p0))
         }
 
         override fun wifiConfigFailed(p0: Exception?) {
           device.disconnectDevice()
           // device.refreshServicesOfBleDevice() //instead of disconnect just for test
           Log.e("ESPProvisioning", "provision-wifiConfigFailed"+p0.toString());
-          promise.reject(p0.toString())
+          promise.reject(p0 as? Throwable ?: RuntimeException(p0?.message ?: "Provision failed", p0))
         }
 
         override fun provisioningFailedFromDevice(p0: ESPConstants.ProvisionFailureReason?) {
           device.disconnectDevice()
           // device.refreshServicesOfBleDevice() //instead of disconnect just for test
-          Log.e("ESPProvisioning", "provision-provisioningFailedFromDevice"+p0.toString());
-          promise.reject(p0.toString())
+          val errorMessage = p0?.name ?: "Unknown provision failure"
+          Log.e("ESPProvisioning", "provision-provisioningFailedFromDevice: $errorMessage");
+          promise.reject("PROVISION_ERROR", "Provisioning failed: $errorMessage")
         }
 
         override fun wifiConfigSent() {

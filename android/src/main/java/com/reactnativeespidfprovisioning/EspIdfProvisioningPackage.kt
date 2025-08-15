@@ -10,6 +10,10 @@ import com.facebook.react.uimanager.ViewManager
 import com.facebook.react.bridge.JavaScriptModule
 
 class EspIdfProvisioningPackage : ReactPackage {
+    override fun getModule(name: String, reactContext: ReactApplicationContext): NativeModule? {
+        return if (name == "EspIdfProvisioning") EspIdfProvisioningModule(reactContext) else null
+    }
+
     override fun createNativeModules(reactContext: ReactApplicationContext): List<NativeModule> {
         return Arrays.asList<NativeModule>(EspIdfProvisioningModule(reactContext))
     }
