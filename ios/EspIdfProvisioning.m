@@ -1,5 +1,10 @@
+#ifdef RCT_NEW_ARCH_ENABLED
 #import <React/RCTBridgeModule.h>
 #import <React/RCTEventEmitter.h>
+#else
+#import <React/RCTBridgeModule.h>
+#import <React/RCTEventEmitter.h>
+#endif
 
 @interface RCT_EXTERN_MODULE(EspIdfProvisioning, RCTEventEmitter)
 
